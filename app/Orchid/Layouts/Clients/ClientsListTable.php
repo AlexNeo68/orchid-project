@@ -5,6 +5,7 @@ namespace App\Orchid\Layouts\Clients;
 use App\Models\Client;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -40,7 +41,11 @@ class ClientsListTable extends Table
             TD::make('email', 'Email'),
             TD::make('assessment', 'Оценка')->width('200px'),
             TD::make('created_at', 'Дата создания')->defaultHidden(),
-            TD::make('updated_at', 'Дата обновления')->defaultHidden()
+            TD::make('updated_at', 'Дата обновления')->defaultHidden(),
+            TD::make('action')->render(function(Client $client){
+                return ModalToggle::make('Редактировать')
+                ->modal('editClient');
+            })
         ];
     }
 

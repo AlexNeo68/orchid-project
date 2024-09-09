@@ -28,7 +28,9 @@ class CreateUpdateClientRows extends Rows
      */
     protected function fields(): iterable
     {
+        $isClientExist = is_null($this->query->getContent('client'))===false;
         return [
+            Input::make('client.id')->type('hidden'),
             Input::make('client.phone')->required()->title('Телефон')->mask('(999) 999-9999'),
             Group::make([
                 Input::make('client.name')->required()->title('Имя')->placeholder('Имя клиента'),

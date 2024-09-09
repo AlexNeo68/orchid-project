@@ -22,7 +22,7 @@ class ClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client.phone' =>  ['sometimes', 'phone:RU', 'required'],
+            'client.phone' =>  ['sometimes', 'required'],
             'client.name' => ['required'],
             'client.last_name' => ['required'],
             'client.email' => ['required', 'email'],

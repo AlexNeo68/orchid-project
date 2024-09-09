@@ -10,6 +10,7 @@ use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
+use Orchid\Support\Facades\Toast;
 
 class ClientScreen extends Screen
 {
@@ -43,7 +44,9 @@ class ClientScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            ModalToggle::make('Создать клиента')->modal('createClient')->method('create')
+            ModalToggle::make('Создать клиента')
+            ->modal('createClient')
+            ->method('create')
         ];
     }
 
@@ -58,13 +61,18 @@ class ClientScreen extends Screen
             ClientsListTable::class,
             Layout::modal('createClient', [
                 CreateUpdateClientRows::class
-            ])
+            ])->title('Создание клиента')->applyButton('Создать')
         ];
     }
 
-    public function create(ClientRequest $request): void
+    public function createOrUpdate(ClientRequest $request): void
     {
-        $client = $request->all();
-        dd($client);
+        $clientId = $request->input('client.id');
+        Client::updateOrCreate(['id'=>$clientId], array_merge($request->validated()['client'], [
+            'status' => 'interviewed',
+        ]));
+
+        is_null($clientId) ? Toast::info('Клиент создан') : Toast::info('Клиент обновлен');
+        
     }
 }
