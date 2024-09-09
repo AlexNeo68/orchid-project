@@ -2,8 +2,11 @@
 
 namespace App\Orchid\Screens;
 
+use App\Http\Requests\ClientRequest;
 use App\Models\Client;
-
+use App\Orchid\Layouts\Clients\ClientsListTable;
+use App\Orchid\Layouts\Clients\CreateUpdateClientRows;
+use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
@@ -18,7 +21,7 @@ class ClientScreen extends Screen
     public function query(): iterable
     {
         return [
-            'clients' => Client::paginate(10)
+            'clients' => Client::filters()->defaultSort('status', 'desc')->paginate(10)
         ];
     }
 
@@ -39,7 +42,9 @@ class ClientScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [];
+        return [
+            ModalToggle::make('Создать клиента')->modal('createClient')->method('create')
+        ];
     }
 
     /**
@@ -50,9 +55,16 @@ class ClientScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::table('clients', [
-                TD::make('phone', __('Телефон'))
+            ClientsListTable::class,
+            Layout::modal('createClient', [
+                CreateUpdateClientRows::class
             ])
         ];
+    }
+
+    public function create(ClientRequest $request): void
+    {
+        $client = $request->all();
+        dd($client);
     }
 }
