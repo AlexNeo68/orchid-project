@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\AnalyticsAndReportsScreen;
 use App\Orchid\Screens\ClientScreen;
 use App\Orchid\Screens\EmailSenderScreen;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
@@ -44,6 +45,14 @@ Route::screen('/clients', ClientScreen::class)
         fn(Trail $trail) => $trail
             ->parent('platform.index')
             ->push('Клиенты')
+    );
+
+Route::screen('/analytics-and-reports', AnalyticsAndReportsScreen::class)
+    ->name('platform.analytics_and_reports')
+    ->breadcrumbs(
+        fn(Trail $trail) => $trail
+            ->parent('platform.index')
+            ->push('Аналитика и отчёты')
     );
 
 // Platform > Profile

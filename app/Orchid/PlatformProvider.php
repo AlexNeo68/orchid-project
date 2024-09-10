@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid;
 
+use Illuminate\Support\Facades\Auth;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
@@ -39,6 +40,11 @@ class PlatformProvider extends OrchidServiceProvider
                 ->title('Клиенты')
                 ->route('platform.clients.index')
                 ->permission('platform.clients'),
+            Menu::make('Аналитика и отчёты')
+                ->icon('bs.bar-chart')
+                ->title('Аналитика и отчёты')
+                ->route('platform.analytics_and_reports')
+                ->canSee(Auth::user()->hasAccess('platform.analytics') && Auth::user()->hasAccess('platform.reports')),
             // Menu::make('Get Started')
             //     ->icon('bs.book')
             //     ->title('Navigation')
