@@ -31,4 +31,9 @@ class Client extends Model
         'not_interviewed' => 'Не опрошен',
         'interviewed' => 'Опрошен',
     ];
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 }
