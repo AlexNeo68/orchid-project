@@ -37,7 +37,8 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Клиенты')
                 ->icon('bs.people-fill')
                 ->title('Клиенты')
-                ->route('platform.clients.index'),
+                ->route('platform.clients.index')
+                ->permission('platform.clients'),
             // Menu::make('Get Started')
             //     ->icon('bs.book')
             //     ->title('Navigation')
@@ -112,6 +113,10 @@ class PlatformProvider extends OrchidServiceProvider
             ItemPermission::group(__('System'))
                 ->addPermission('platform.systems.roles', __('Roles'))
                 ->addPermission('platform.systems.users', __('Users')),
+            ItemPermission::group(__('Отзывы клиентов'))
+                ->addPermission('platform.clients', __('Клиенты'))
+                ->addPermission('platform.analytics', __('Аналитика'))
+                ->addPermission('platform.reports', __('Отчеты')),
         ];
     }
 }

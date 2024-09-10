@@ -14,6 +14,11 @@ use Orchid\Support\Facades\Toast;
 
 class ClientScreen extends Screen
 {
+
+
+    public $permission = 'platform.clients';
+
+
     /**
      * Fetch data to be displayed on the screen.
      *
@@ -45,8 +50,8 @@ class ClientScreen extends Screen
     {
         return [
             ModalToggle::make('Создать клиента')
-            ->modal('createClient')
-            ->method('create')
+                ->modal('createClient')
+                ->method('create')
         ];
     }
 
@@ -61,18 +66,27 @@ class ClientScreen extends Screen
             ClientsListTable::class,
             Layout::modal('createClient', [
                 CreateUpdateClientRows::class
-            ])->title('Создание клиента')->applyButton('Создать')
+            ])->title('Создание клиента')->applyButton('Создать'),
+            Layout::modal('updateClient', [
+                CreateUpdateClientRows::class
+            ])->title('Редактирование клиента')->applyButton('Обновить')->async('asyncGetClient')
+        ];
+    }
+
+    public function asyncGetClient(Client $client)
+    {
+        return [
+            'client' => $client
         ];
     }
 
     public function createOrUpdate(ClientRequest $request): void
     {
         $clientId = $request->input('client.id');
-        Client::updateOrCreate(['id'=>$clientId], array_merge($request->validated()['client'], [
+        Client::updateOrCreate(['id' => $clientId], array_merge($request->validated()['client'], [
             'status' => 'interviewed',
         ]));
 
         is_null($clientId) ? Toast::info('Клиент создан') : Toast::info('Клиент обновлен');
-        
     }
 }

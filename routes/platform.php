@@ -39,7 +39,12 @@ Route::screen('/main', PlatformScreen::class)
     ->name('platform.main');
 
 Route::screen('/clients', ClientScreen::class)
-    ->name('platform.clients.index');
+    ->name('platform.clients.index')
+    ->breadcrumbs(
+        fn(Trail $trail) => $trail
+            ->parent('platform.index')
+            ->push('Клиенты')
+    );
 
 // Platform > Profile
 Route::screen('profile', UserProfileScreen::class)

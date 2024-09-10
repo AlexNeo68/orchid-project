@@ -42,10 +42,15 @@ class ClientsListTable extends Table
             TD::make('assessment', 'Оценка')->width('200px'),
             TD::make('created_at', 'Дата создания')->defaultHidden(),
             TD::make('updated_at', 'Дата обновления')->defaultHidden(),
-            TD::make('action')->render(function(Client $client){
+            TD::make('action')->render(function (Client $client) {
                 return ModalToggle::make('Редактировать')
-                ->modal('editClient');
-            })
+                    ->modal('updateClient')
+                    ->method('createOrUpdate')
+                    ->modalTitle('Редактирование клиента ' . $client->phone)
+                    ->asyncParameters([
+                        'client' => $client->id
+                    ]);
+            }),
         ];
     }
 
